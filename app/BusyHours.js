@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Dimensions,
-} from 'react-native';
-import AnimatedBar from '../Components/AnimatedBar';
+import {View, Dimensions} from 'react-native';
+import {BarChart} from 'react-native-chart-kit'
 
 const window = Dimensions.get('window');
-const DELAY = 100;
+const screenWidth = window.width
+const data = {
+  labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+  datasets: [{
+    data: [ 20, 45, 28, 80, 99, 43 ]
+  }]
+}
 
 class BusyHours extends Component {
   constructor(props) {
@@ -37,9 +40,38 @@ class BusyHours extends Component {
   }
 
   render() {
+    const barStyles = {
+      borderTopRightRadius: 5,
+      borderBottomRightRadius: 5
+    };
+
+    const data = {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+        datasets: [{
+            data: [ 20, 45, 28, 80, 99, 43 ]
+        }]
+    };
+
     return (
       <View style={{flexDirection: 'row', backgroundColor: '#F5FCFF'}}>
-          {this.state.data.map((value, index) => <View style={{flex: 1}}><AnimatedBar value={value} delay={DELAY * index} key={index} /></View>)}
+          <BarChart
+            style={{
+      marginVertical: 8,
+      borderRadius: 16
+    }}
+            data={data}
+            width={screenWidth}
+            height={220}
+            chartConfig={{
+                backgroundColor: '#fdfdfd',
+                backgroundGradientFrom: '#adadad',
+                backgroundGradientTo: '#efefef',
+                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                style: {
+                    borderRadius: 5
+                }
+            }}
+            />
       </View>
     );
   }
