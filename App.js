@@ -3,17 +3,17 @@ import React, { Component } from 'react';
 import { AppRegistry, Dimensions } from 'react-native';
 import { createDrawerNavigator } from 'react-navigation';
 
-import SideMenu from './SideMenu/SideMenu'
-import stackNav from './app/stacknav';
+import SideMenu from './Components/SideMenu'
+import LeftNav from './app/LeftNav';
 
-const drawernav = createDrawerNavigator({
+const App = createDrawerNavigator({
   Item1: {
-      screen: stackNav,
+      screen: LeftNav,
     }
   }, {
     contentComponent: SideMenu,
     drawerWidth: Dimensions.get('window').width - 120,  
 });
 
-export default drawernav;
+export default App;
 //AppRegistry.registerComponent('Demo', () => drawernav);
