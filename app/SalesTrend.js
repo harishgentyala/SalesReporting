@@ -24,7 +24,7 @@ class SalesTrend extends React.PureComponent {
     },
     method: "POST",
     body: JSON.stringify({
-        "sql":'SELECT transactionmonth,transactionyear,"HOUR",sum(sales) as sales from SALESREPORT_INFO group by transactionmonth,transactionyear,"HOUR"',
+        "sql":'SELECT transactionmonth,transactionyear,"HOUR",sum(sales) as sales from SALESREPORT_INFO where businessdate in (\'2018-09-26\') group by transactionmonth,transactionyear,"HOUR" order by "HOUR" asc',
         "offset":0,
         "limit":50000,
         "acceptPartial":false,
@@ -51,15 +51,14 @@ class SalesTrend extends React.PureComponent {
 }
 
     render() {
-        console.log("resultant data",this.state.data.results);
-        const resultantData = this.state.data.results.map((element,index) => parseInt(element[3]));
+        const resultantSales = this.state.data.results.map((element,index) => parseInt(element[3]));
+        const resultantHours = this.state.data.results.map((element,index) => element[2]);
         const data = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+            labels: resultantHours,
             datasets: [{
-                data: resultantData//[ 20, 45, 28, 80, 99, 43 ]
+                data: resultantSales//[ 20, 45, 28, 80, 99, 43 ]
             }]
         };
-        console.log("final data",data.datasets[0].data);
 
         return (
             <View>
