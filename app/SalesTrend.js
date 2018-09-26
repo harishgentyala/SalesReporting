@@ -16,7 +16,7 @@ class SalesTrend extends React.PureComponent {
     },
     method: "POST",
     body: JSON.stringify({
-        "sql":"SELECT transactionmonth,transactionyear,sum(sales) as sales from SALESREPORT_INFO group by transactionmonth,transactionyear",
+        "sql":'SELECT transactionmonth,transactionyear,"HOUR",sum(sales) as sales from SALESREPORT_INFO group by transactionmonth,transactionyear,"HOUR"',
         "offset":0,
         "limit":50000,
         "acceptPartial":false,
@@ -42,10 +42,8 @@ class SalesTrend extends React.PureComponent {
 
     render() {
 
-        const data = [ 50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80 ];
+        const resultantData = this.state.data.results.map((element,index) => parseFloat(element[3]));
 
-        const resultantData = this.state.data.results.map((element,index) => parseFloat(element[2]));
-        
         return (
             <LineChart
                 style={{ height: 200 }}
