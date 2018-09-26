@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-  AppRegistry,
+  ActivityIndicator,
   StyleSheet,
   Text,
   TextInput,
@@ -12,60 +12,58 @@ import {
 } from 'react-native'
 
 class TopCustomers extends Component {
+    constructor(props){
+        super(props);
+        this.state = {isLoading: true, data: {results: []}}
+    }
+
+    componentDidMount(){
+        options = {
+        headers:{
+            "Authorization":"Basic YWRtaW46S1lMSU4=",
+            "Content-Type":"application/json"
+        },
+        method: "POST",
+        body: JSON.stringify({
+            "sql":'SELECT customername,sum(sales) as sales from SALESREPORT_INFO group by customername order by sales desc',
+            "offset":0,
+            "limit":50000,
+            "acceptPartial":false,
+            "project":"SALESREPORTINGAPP"
+        })
+    }
+
+    return fetch('http://153.71.16.34:7070/kylin/api/query',options)
+    .then((response) => response.json())
+    .then((responseJson) => {
+        this.setState({
+            isLoading: false,
+            data: responseJson
+        }, function(){
+
+        });
+    })
+    .catch((error) =>{
+        console.error(error);
+    });
+}
  renderRow(data, i) {
         return (
-           <View style={{flexDirection: "row"}}>
+           <View style={{flexDirection: "row"}} key={"customer-"+i}>
                 <View style={{ flex: 1,   height:50,  alignItems: "center", justifyContent: "center" }} >
                    <Text style={styles.Text}> {i+1} </Text>
                   </View>
                 <View style={{ flex: 1,   height:50,  alignItems: "center", justifyContent: "center" }} >
-                 <Text style={styles.Text}>   {data[1]} </Text> 
+                 <Text style={styles.Text}>   {data[0]} </Text> 
                 </View>
               <View style={{ flex: 1,   height:50,  alignItems: "center", justifyContent: "center" }} >
-                 <Text style={styles.Text}>${data[2]}</Text> 
+                 <Text style={styles.Text}>${data[1]}</Text> 
                 </View>
             </View>
         );
     }
 
  render() {
-    const data = {"columnMetas": [
-                      {"key":1, "one": 11},
-                      {"key":2},
-                      {"key":3}]};
-     const data1 = {"results": [
-        [
-            "1",
-            "JOSEPH",
-            "10.23"
-        ],
-        [
-            "2",
-            "HARRY",
-            "15.5"
-        ],
-        [
-            "3",
-            "TOM",
-            "80.0"
-        ],
-        [
-            "4",
-            "Lucy",
-            "30.23"
-        ],
-        [
-            "5",
-            "LARRY",
-            "18.92"
-        ],
-        [
-            "6",
-            "FRANKLIN",
-            "18.92"
-        ]
-    ]};
- 
     return (
         <View>
             <View
@@ -105,15 +103,18 @@ class TopCustomers extends Component {
                     <Text>Sales</Text>
                 </View>
             </View>
-        
-             <View
-                style={{}}>
-                {
-                data1.results.map((datum,index) => { // This will render a row for each data element.
-                    return this.renderRow(datum,index);
-                })
+            {
+                this.state.isLoading ?
+                <View style={{marginTop: 100}}><ActivityIndicator size="large" color="#0000ff" /></View> :
+                <View
+                    style={{}}>
+                    {
+                    this.state.data.results.map((datum,index) => { // This will render a row for each data element.
+                        return this.renderRow(datum,index);
+                    })
+                }
+                </View>
             }
-            </View>
         </View>   
     );
 }

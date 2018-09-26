@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { AppRegistry, Dimensions } from 'react-native';
+import { Dimensions } from 'react-native';
 import { createDrawerNavigator } from 'react-navigation';
 
 import SideMenu from './Components/SideMenu'
@@ -16,4 +16,3 @@ const App = createDrawerNavigator({
 });
 
 export default App;
-//AppRegistry.registerComponent('Demo', () => drawernav);
