@@ -1,5 +1,13 @@
 import React from 'react'
-import { LineChart, Grid } from 'react-native-svg-charts'
+import {
+    LineChart,
+    BarChart,
+    PieChart,
+    ProgressChart,
+    ContributionGraph
+} from 'react-native-chart-kit';
+import { Dimensions, Text, View } from 'react-native';
+const screenWidth = Dimensions.get('window').width
 
 class SalesTrend extends React.PureComponent {
 
@@ -16,7 +24,7 @@ class SalesTrend extends React.PureComponent {
     },
     method: "POST",
     body: JSON.stringify({
-        "sql":'SELECT transactionmonth,transactionyear,"HOUR",sum(sales) as sales from SALESREPORT_INFO group by transactionmonth,transactionyear,"HOUR"',
+        "sql":'SELECT transactionmonth,transactionyear,"HOUR",sum(sales) as sales from SALESREPORT_INFO where businessdate in (\'2018-09-26\') group by transactionmonth,transactionyear,"HOUR" order by "HOUR" asc',
         "offset":0,
         "limit":50000,
         "acceptPartial":false,
@@ -28,11 +36,13 @@ class SalesTrend extends React.PureComponent {
 .then((response) => response.json())
 .then((responseJson) => {
 
-    this.setState({
-    data: responseJson
-    }, function(){
+    if(!responseJson.exception) {
+        this.setState({
+            data: responseJson
+        }, function () {
 
-});
+        });
+    }
 
 })
 .catch((error) =>{
@@ -41,19 +51,38 @@ class SalesTrend extends React.PureComponent {
 }
 
     render() {
-
-        const resultantData = this.state.data.results.map((element,index) => parseFloat(element[3]));
+        const resultantSales = this.state.data.results.map((element,index) => parseInt(element[3]));
+        const resultantHours = this.state.data.results.map((element,index) => element[2]);
+        const data = {
+            labels: resultantHours,
+            datasets: [{
+                data: resultantSales//[ 20, 45, 28, 80, 99, 43 ]
+            }]
+        };
 
         return (
+            <View>
+        {data.datasets[0].data.length > 0 ? (
             <LineChart
-                style={{ height: 200 }}
-                data={ resultantData }
-                svg={{ stroke: 'rgb(134, 65, 244)' }}
-                contentInset={{ top: 20, bottom: 20 }}
-            >
-                <Grid/>
-            </LineChart>
-        )
+                data={data}
+                bezier = {true}
+                width={screenWidth}
+                height={220}
+                chartConfig={{
+                  backgroundColor: '#e26a00',
+                  backgroundGradientFrom: '#fb8c00',
+                  backgroundGradientTo: '#ffa726',
+                  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                  style: {
+                    borderRadius: 16
+                  }
+                }}
+            />
+        ) : (
+            <Text>No data to display</Text>
+        )}
+                </View>
+        );
     }
 }
 
