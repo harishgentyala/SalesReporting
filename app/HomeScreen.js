@@ -59,13 +59,13 @@ class HomeScreen extends Component {
         flexDirection: 'row',
         alignItems: 'stretch',
       }}>
-                <TouchableOpacity style={styles.Profile} onPress={() => this.props.navigation.navigate('SalesTrend')}>
+                <TouchableOpacity style={styles.Profile} onPress={() => this.props.navigation.navigate('Profile',{username: this.props.navigation.getParam("username","user")})}>
                 <View >
                     <Image source={require('../Images/profile.png')} />
                     <Text>Profile</Text>
                 </View>
                     </TouchableOpacity>
-                <TouchableOpacity style={styles.Settings} onPress={() => this.props.navigation.navigate('SalesTrend')}>
+                <TouchableOpacity style={styles.Settings} onPress={() => this.props.navigation.navigate('Profile',{username: this.props.navigation.getParam("username","user")})}>
 
                 <View >
                     <Image source={require('../Images/settings.png')} />

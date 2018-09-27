@@ -36,12 +36,12 @@ export default class Login extends Component {
 
                 <View style={{flexDirection:"row",marginTop:100,  justifyContent:'center', alignContent: 'center',alignItems:'center' }}>
                     <View >
-                        <TextInput style={styles.inputBox}  placeholder="Username" onChangeText={(text) => this.setUsername(text)}/>
+                        <TextInput value={this.state.username} style={styles.inputBox}  placeholder="Username" onChangeText={(text) => this.setUsername(text)}/>
                     </View>
                 </View>
                 <View style={{flexDirection:"row",marginTop:20, justifyContent:'center', alignContent: 'center',alignItems:'center' }}>
                     <View >
-                        <TextInput style={styles.inputBox}  placeholder="Password" onChangeText={(text) => this.setState({text})}/>
+                        <TextInput value={this.state.password} secureTextEntry={true} style={styles.inputBox}  placeholder="Password" onChangeText={(text) => this.setState({text})}/>
                     </View>
                 </View>
                 <View style={{ justifyContent:'center',alignContent: 'center',alignItems:'center',marginTop:60  }}>

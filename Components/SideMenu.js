@@ -42,7 +42,7 @@ class SideMenu extends Component {
                   <Text style={styles.ButtonText}> Top Products </Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity  onPress={() => this.props.navigation.navigate('Main')}>
+              <TouchableOpacity  onPress={() => this.props.navigation.navigate('Main',{username:'',password:''})}>
                 <View style={{backgroundColor: '#fff'}}>
                   <Text style={styles.ButtonLogout}> Logout </Text>
                 </View>

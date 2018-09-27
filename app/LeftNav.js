@@ -16,6 +16,10 @@ import TopCustomers from "./TopCustomers";
 import TopProducts from "./TopProducts";
 import BusyHoursFilters from "./BusyHoursFilters";
 import SalesTrendFilters from "./SalesTrendFilters";
+import TopCustomerFilters from "./TopCustomerFilters";
+import Profile from "./Profile";
+
+
 import Login from "./Login";
 
 const LeftNav = createStackNavigator({
@@ -64,6 +68,18 @@ const LeftNav = createStackNavigator({
     screen: TopProducts,
     navigationOptions: ({navigation}) => ({
       title: "Top Products",
+    })
+  },
+  TopCustomerFilters: {
+    screen: TopCustomerFilters,
+    navigationOptions: ({navigation}) => ({
+      title: "Top Customer Filters",
+    })
+  }
+  ,
+  Profile: {
+    screen: Profile,
+    navigationOptions: ({navigation}) => ({
     })
   }
 });
