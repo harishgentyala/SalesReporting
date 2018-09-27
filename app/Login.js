@@ -21,7 +21,6 @@ export default class Login extends Component {
     }
 
     navigateToHomeScreen(){
-        console.log(this.props);
         this.props.navigation.navigate("HomeScreen", {
             username: this.state.username
         });
@@ -29,10 +28,6 @@ export default class Login extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.TextViewCenter}>
-                    <Text style={styles.TextCenter} >  Sales Reporting  </Text>
-                </View>
-
 
                 <View style={styles.TextViewCenter}>
                     <Text style={styles.TextLoginCenter} > Login  </Text>
@@ -66,12 +61,12 @@ export default class Login extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#F5FCFF'
     },
     welcome: {
         fontSize: 20,
         textAlign: 'center',
-        margin: 10,
+        margin: 10
     },
     inputBox: {
         height: 30,

@@ -6,12 +6,23 @@ import {
     ProgressChart,
     ContributionGraph
 } from 'react-native-chart-kit';
-import { Dimensions, Text, View, TouchableOpacity } from 'react-native';
+import { Dimensions, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import IOSIcon from "react-native-vector-icons/Ionicons";
 
 const screenWidth = Dimensions.get('window').width;
 
 class SalesTrend extends React.PureComponent {
+
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: "Sales Trend",
+            headerRight: (<TouchableOpacity onPress= {() => navigation.navigate("SalesTrendFilters",{
+    onNavigateBack: handleOnNavigateBack.bind(this)
+})}>
+                <IOSIcon name="ios-menu" size={30} />
+            </TouchableOpacity>)
+        };
+    };
 
     constructor(props){
         super(props);
@@ -73,11 +84,7 @@ class SalesTrend extends React.PureComponent {
 
         return (
             <View>
-                <TouchableOpacity onPress= {() => this.props.navigation.navigate("SalesTrendFilters",{
-  onNavigateBack: this.handleOnNavigateBack.bind(this)
-})}>
-                    <IOSIcon name="ios-menu" size={30} />
-                </TouchableOpacity>
+
         {data.datasets[0].data.length > 0 ? (
             <LineChart
                 data={data}
@@ -95,9 +102,8 @@ class SalesTrend extends React.PureComponent {
                 }}
             />
         ) : (
-            <Text>No data to display</Text>
+            <View style={{marginTop: 100}}><ActivityIndicator size="large" color="#0000ff" /></View>
         )}
-                <Text>{this.props.navigation.getParam('businessdate', 'NO-ID')}</Text>
                 </View>
         );
     }
