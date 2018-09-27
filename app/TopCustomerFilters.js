@@ -16,6 +16,7 @@ export default class TopCustomerFilters extends Component {
         this.sendFilters = this.sendFilters.bind(this);
         this.setMonth = this.setMonth.bind(this);
         this.setYear = this.setYear.bind(this);
+        this.setOrder = this.setOrder.bind(this);
         this.state = {month: 'JAN', year:'2018', order:'desc'};
 
     }
