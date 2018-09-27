@@ -96,8 +96,6 @@ class SalesTrendFilters extends Component {
                 />
             </View>
 
-
-
         )
     }
 }

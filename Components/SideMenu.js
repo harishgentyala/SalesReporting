@@ -10,7 +10,7 @@ class SideMenu extends Component {
       routeName: route
     });
     this.props.navigation.dispatch(navigateAction);
-  }
+  };
 
   render () {
     return (
