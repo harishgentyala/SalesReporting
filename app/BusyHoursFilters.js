@@ -16,7 +16,7 @@ class BusyHoursFilters extends Component {
         super(props);
         this.sendFilters = this.sendFilters.bind(this);
         this.state = {
-            businessDate:'2018-09-26',
+            businessDate:'2018-09-28',
             hourFrom: '09',
             hourTo: '18'
         }
@@ -29,18 +29,16 @@ class BusyHoursFilters extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.TextViewCenter}>
-                    <Text style={styles.TextCenter} >  Filters  </Text>
-                </View>
                 <View style={{flexDirection:"row",marginTop:60 }}>
                     <View style={{flex:1}}>
                         <Text style={styles.Text}>  Date:  </Text>
                     </View>
                     <View style={{flex:2}}>
                         <Picker selectedValue={this.state.businessDate} style={{ height: 30, width: 200,marginTop:10, marginLeft:30 }} onValueChange={(itemValue, itemIndex) => this.setState({businessDate: itemValue})}>
-                            <Picker.Item label="2018-09-25" value="2018-01-11" />
+                            <Picker.Item label="2018-09-25" value="2018-09-25" />
                             <Picker.Item label="2018-09-26" value="2018-09-26" />
                             <Picker.Item label="2018-09-27" value="2018-09-27" />
+                            <Picker.Item label="2018-09-28" value="2018-09-28" />
                         </Picker>
                     </View>
                 </View>
@@ -94,7 +92,7 @@ class BusyHoursFilters extends Component {
                 </View>
                 <View style={{ justifyContent:'center',alignContent: 'center',alignItems:'center',marginTop:60  }}>
                     <View >
-                        <View style={{width:200}}>
+                        <View style={{width:250}}>
                             <Button  style={{width:200}} title="Apply" color="#841584" onPress={this.sendFilters}/>
                         </View>
                     </View>

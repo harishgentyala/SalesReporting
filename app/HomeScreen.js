@@ -1,15 +1,17 @@
 import React,{ Component } from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-
+import IOSIcon from "react-native-vector-icons/Ionicons";
 
 class HomeScreen extends Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
-            title: "Welcome " + navigation.getParam('username', 'user'),
+            title: "Home",
+            headerLeft: (<TouchableOpacity onPress= {() => navigation.openDrawer()}>
+                <IOSIcon name="ios-menu" size={30} style={{marginLeft: 10}} />
+            </TouchableOpacity>)
         };
     };
-
     constructor(props){
         super(props);
     }

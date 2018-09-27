@@ -25,7 +25,7 @@ class TopProducts extends Component {
         },
         method: "POST",
         body: JSON.stringify({
-            "sql":'SELECT SALESREPORT_INFO.ITEMNAME AS ITEMNAME, SUM(SALESREPORT_INFO.QUANTITY) AS QTY, SUM(SALES) AS SALES FROM SALESREPORT_INFO group by ITEMNAME ORDER BY QTY DESC',
+            "sql":'SELECT SALESREPORT_INFO.ITEMNAME AS ITEMNAME, DEPTNAME, SUM(SALESREPORT_INFO.QUANTITY) AS QTY, SUM(SALES) AS SALES FROM SALESREPORT_INFO group by ITEMNAME, DEPTNAME ORDER BY QTY DESC',
             "offset":0,
             "limit":50000,
             "acceptPartial":false,
@@ -57,10 +57,12 @@ class TopProducts extends Component {
                 <View  style={styles.RowText} >
                     <Text style={styles.Text}>   {data[1]} </Text>
                 </View>
-                <View  style={styles.RowText} >
+                <View  style={styles.RowText2} >
+                    <Text style={styles.Text}>   {data[2]}  </Text>
+                </View>
+                <View  style={styles.RowText2} >
                     <Text style={styles.Text}>   ${data[2]}  </Text>
                 </View>
-
             </View>
         );
     }
@@ -73,10 +75,13 @@ class TopProducts extends Component {
                     <View  style={styles.HeaderColumn}>
                         <Text>Item </Text>
                     </View>
-                    <View style={styles.HeaderColumn}>
+                    <View  style={styles.HeaderColumn}>
+                        <Text>Department </Text>
+                    </View>
+                    <View style={styles.HeaderColumn2}>
                         <Text>Quantity</Text>
                     </View>
-                    <View style={styles.HeaderColumn}>
+                    <View style={styles.HeaderColumn2}>
                         <Text>Sales</Text>
                     </View>
                 </View>
@@ -100,7 +105,7 @@ const styles = StyleSheet.create({
         height: 50,
         flexDirection: "row",
         borderColor: '#82cc5d',
-        backgroundColor:'#cfedc0'
+        backgroundColor:'#FFF'
     },
     HeaderColumn: {
         flex: 1,
@@ -109,8 +114,23 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center"
     },
+    HeaderColumn2: {
+        flex: 0.5,
+        borderWidth: 1,
+        borderColor: '#82cc5d',
+        alignItems: "center",
+        justifyContent: "center"
+    },
     RowText: {
         flex: 1,
+        height:50,
+        alignItems: "center",
+        justifyContent: "center",
+        borderColor: '#82cc5d',
+        borderWidth: 1
+    },
+     RowText2: {
+        flex: 0.5,
         height:50,
         alignItems: "center",
         justifyContent: "center",
