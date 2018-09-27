@@ -102,6 +102,9 @@ class TopCustomers extends Component {
  render() {
     return (
         <View>
+            <View style={{marginTop:15,marginBottom:10, alignItems: "center" }}>
+                <Text>{this.state.order == "asc" ? "Least" : "Top"} 5 in {this.state.month},{this.state.year}</Text>
+            </View>
             <View>
                 <View  style={styles.HeaderParent}>
                     <View  style={styles.HeaderColumn}>
@@ -121,12 +124,15 @@ class TopCustomers extends Component {
                 <View style={{marginTop: 100}}>
                     <ActivityIndicator size="large" color="#0000ff" />
                 </View> :
-                <View
-                    style={{}}>
+                <View>
                     {
+                        this.state.data.results.length > 0 ? (
                     this.state.data.results.map((datum,index) => { // This will render a row for each data element.
                         return this.renderRow(datum,index);
-                    })
+                    })) : (<View style={{flexDirection: "row"}} ><View style={styles.RowText} >
+                                <Text style={styles.Text}> No Available Data </Text>
+                        </View>
+                            </View>)
                 }
                 </View>
             }

@@ -15,13 +15,16 @@ export default class Login extends Component {
     constructor(props){
         super(props);
         this.navigateToHomeScreen = this.navigateToHomeScreen.bind(this);
-        this.state = {username: ''}
+        this.state = {username: '', password: ''}
     }
     setUsername(itemValue){
         this.setState({username: itemValue});
     }
-
+    setPassword(itemValue){
+        this.setState({password: itemValue});
+    }
     navigateToHomeScreen(){
+        this.setState({username: '', password: ''});
         this.props.navigation.navigate("HomeScreen", {
             username: this.state.username
         });
@@ -41,7 +44,7 @@ export default class Login extends Component {
                 </View>
                 <View style={{flexDirection:"row",marginTop:20, justifyContent:'center', alignContent: 'center',alignItems:'center' }}>
                     <View >
-                        <TextInput value={this.state.password} secureTextEntry={true} style={styles.inputBox}  placeholder="Password" onChangeText={(text) => this.setState({text})}/>
+                        <TextInput value={this.state.password} secureTextEntry={true} style={styles.inputBox}  placeholder="Password" onChangeText={(text) => this.setPassword(text)}/>
                     </View>
                 </View>
                 <View style={{ justifyContent:'center',alignContent: 'center',alignItems:'center',marginTop:60  }}>
@@ -52,8 +55,6 @@ export default class Login extends Component {
                     </View>
                 </View>
             </View>
-
-
 
         )
     }
