@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {ActivityIndicator, View, Dimensions, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import IOSIcon from "react-native-vector-icons/Ionicons";
+import Feather from "react-native-vector-icons/Feather";
 import {BarChart} from 'react-native-chart-kit'
 
 const window = Dimensions.get('window');
@@ -14,7 +15,7 @@ class BusyHours extends Component {
             isLoading: true,
             data: {results:[]},
             filters:{
-                businessDate:'2018-09-26',
+                businessDate:'2018-09-28',
                 hourFrom: '09',
                 hourTo: '18'
             }
@@ -23,6 +24,20 @@ class BusyHours extends Component {
             handleOnNavigateBack: this.handleOnNavigateBack,
         });
     }
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: "Busy Hours",
+            headerRight: (
+                <TouchableOpacity onPress= {() => navigation.navigate("BusyHoursFilters",{
+                onNavigateBack: navigation.getParam("handleOnNavigateBack")
+                })}>
+                    <Feather name="filter" size={25} style={{marginRight: 10}} />
+                </TouchableOpacity>),
+            headerLeft: (<TouchableOpacity onPress= {() => navigation.openDrawer()}>
+                <IOSIcon name="ios-menu" size={30} style={{marginRight: 10}} />
+            </TouchableOpacity>)
+        };
+    };
     handleOnNavigateBack = (filters) => {
         console.log('handleOnNavigateBack', filters)
         
@@ -85,11 +100,6 @@ class BusyHours extends Component {
 
     return (
         <View style={{backgroundColor: '#ffffff', height: window.height}}>
-            <TouchableOpacity onPress= {() => this.props.navigation.navigate("BusyHoursFilters",{
-                onNavigateBack: this.handleOnNavigateBack.bind(this)
-            })}>
-                <IOSIcon name="ios-menu" size={30} />
-            </TouchableOpacity>
             <View style={{flexDirection:"row",marginTop:20 }}>
                 <View style={{flex:1}}>
                     <Text style={styles.Text}>  Date:  </Text>
