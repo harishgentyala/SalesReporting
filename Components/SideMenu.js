@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { NavigationActions } from 'react-navigation';
-import { ScrollView, StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Button, TouchableOpacity,Image } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
 class SideMenu extends Component {
@@ -15,6 +15,7 @@ class SideMenu extends Component {
   render () {
     return (
       <View style={styles.container}>
+           <Image style={{height: 280,width: 300}} source={require('../Images/sales_image.jpg')} /> 
         <ScrollView>
            <View style={styles.navSectionStyle}>
               <TouchableOpacity  onPress={() => this.props.navigation.navigate('HomeScreen')}>
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
  },
  navSectionStyle: {
    backgroundColor: 'lightgrey',
-   marginTop: 50
+   marginTop: 10
  },
  sectionHeadingStyle: {
    paddingVertical: 10,

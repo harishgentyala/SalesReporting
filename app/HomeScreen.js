@@ -12,6 +12,7 @@ class HomeScreen extends Component {
             </TouchableOpacity>)
         };
     };
+
     constructor(props){
         super(props);
     }
