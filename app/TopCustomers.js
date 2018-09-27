@@ -47,18 +47,22 @@ class TopCustomers extends Component {
         console.error(error);
     });
 }
- renderRow(data, i) {
+
+
+    renderRow(data,i) {
         return (
-           <View style={{flexDirection: "row"}} key={"customer-"+i}>
-                <View style={{ flex: 1,   height:50,  alignItems: "center", justifyContent: "center" }} >
-                   <Text style={styles.Text}> {i+1} </Text>
-                  </View>
-                <View style={{ flex: 1,   height:50,  alignItems: "center", justifyContent: "center" }} >
-                 <Text style={styles.Text}>   {data[0]} </Text> 
+            <View style={{flexDirection: "row"}} key={"customer-"+i}>
+                <View style={styles.RowText} >
+                    <Text style={styles.Text}> {i+1} </Text>
+
                 </View>
-              <View style={{ flex: 1,   height:50,  alignItems: "center", justifyContent: "center" }} >
-                 <Text style={styles.Text}>${data[1]}</Text> 
+                <View  style={styles.RowText} >
+                    <Text style={styles.Text}>   {data[0]}  </Text>
                 </View>
+                <View  style={styles.RowText} >
+                    <Text style={styles.Text}>   ${data[1]}  </Text>
+                </View>
+
             </View>
         );
     }
@@ -66,46 +70,25 @@ class TopCustomers extends Component {
  render() {
     return (
         <View>
-            <View
-                style={{
-                    height: 50,
-                    flexDirection: "row",
-                }}
-            >
-                <View
-                    style={{
-                        flex: 1,
-                        borderWidth: 1,
-                        alignItems: "center",
-                        justifyContent: "center"
-                    }}
-                >
-                    <Text>S.No </Text>
+            <View>
+                <View  style={styles.HeaderParent}>
+                    <View  style={styles.HeaderColumn}>
+                        <Text>S.No </Text>
+                    </View>
+                    <View style={styles.HeaderColumn}>
+                        <Text>Customer</Text>
+                    </View>
+                    <View style={styles.HeaderColumn}>
+                        <Text>Sales</Text>
+                    </View>
                 </View>
-                <View
-                    style={{
-                        flex: 1,
-                        borderWidth: 1,
-                        alignItems: "center",
-                        justifyContent: "center"
-                    }}
-                >
-                    <Text>Customer</Text>
-                </View>
-                <View
-                    style={{
-                        flex: 1,
-                        borderWidth: 1,
-                        alignItems: "center",
-                        justifyContent: "center"
-                    }}
-                >
-                    <Text>Sales</Text>
-                </View>
+
             </View>
             {
                 this.state.isLoading ?
-                <View style={{marginTop: 100}}><ActivityIndicator size="large" color="#0000ff" /></View> :
+                <View style={{marginTop: 100}}>
+                    <ActivityIndicator size="large" color="#0000ff" />
+                </View> :
                 <View
                     style={{}}>
                     {
@@ -121,9 +104,30 @@ class TopCustomers extends Component {
 }
 
 const styles = StyleSheet.create({
+    HeaderParent: {
+        height: 50,
+        flexDirection: "row",
+        borderColor: '#82cc5d',
+        backgroundColor:'#cfedc0'
+    },
+    HeaderColumn: {
+        flex: 1,
+        borderWidth: 1,
+        borderColor: '#82cc5d',
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    RowText: {
+        flex: 1,
+        height:50,
+        alignItems: "center",
+        justifyContent: "center",
+        borderColor: '#82cc5d',
+        borderWidth: 1
+    },
     Text: {
         marginTop:0
     }
-});
+})
 
 export default TopCustomers;

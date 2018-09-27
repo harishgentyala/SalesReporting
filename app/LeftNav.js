@@ -21,11 +21,7 @@ const LeftNav = createStackNavigator({
   Main : {
     screen: Login,
     navigationOptions: ({navigation}) => ({
-      title: "Login",
-      headerLeft:(<TouchableOpacity onPress={() => navigation.navigate("DrawerOpen")}>
-                    <IOSIcon name="ios-menu" size={30} />
-                  </TouchableOpacity>
-      ),
+      title: "Sales Reporting",
       headerStyle: {}
     })
   },
@@ -42,8 +38,7 @@ const LeftNav = createStackNavigator({
     })
   },
   SalesTrend: {
-    screen: SalesTrend,
-
+    screen: SalesTrend
   },
   TopCustomers: {
     screen: TopCustomers,
