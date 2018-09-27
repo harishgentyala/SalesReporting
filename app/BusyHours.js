@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {ActivityIndicator, View, Dimensions, Text, TouchableOpacity} from 'react-native';
+import {ActivityIndicator, View, Dimensions, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import IOSIcon from "react-native-vector-icons/Ionicons";
 import {BarChart} from 'react-native-chart-kit'
 
@@ -7,20 +7,33 @@ const window = Dimensions.get('window');
 const screenWidth = window.width
 
 class BusyHours extends Component {
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this.state = {
-      isLoading: true,
-      data: {results:[]},
+        this.state = {
+            isLoading: true,
+            data: {results:[]},
+            filters:{
+                businessDate:'2018-09-26',
+                hourFrom: '09',
+                hourTo: '18'
+            }
+        };
+        this.props.navigation.setParams({
+            handleOnNavigateBack: this.handleOnNavigateBack,
+        });
+    }
+    handleOnNavigateBack = (filters) => {
+        console.log('handleOnNavigateBack', filters)
+        
+        this.getData(filters);
     };
-  }
  
   componentDidMount() {
-    this.getData();
+    this.getData(this.state.filters);
   }
 
-  getData = () => {
+  getData = (filters) => {
     options = {
         headers:{
             "Authorization":"Basic YWRtaW46S1lMSU4=",
@@ -28,7 +41,7 @@ class BusyHours extends Component {
         },
         method: "POST",
         body: JSON.stringify({
-            "sql":"SELECT \"HOUR\", COUNT(SALESREPORT_INFO.CUSTOMERID) FROM  SALESREPORT_INFO WHERE SALESREPORT_INFO.BUSINESSDATE IN('2018-09-26') GROUP BY \"HOUR\" ORDER BY \"HOUR\"",
+            "sql":"SELECT \"HOUR\", COUNT(SALESREPORT_INFO.CUSTOMERID) FROM  SALESREPORT_INFO WHERE SALESREPORT_INFO.BUSINESSDATE IN('"+filters.businessDate+"') AND \"HOUR\" BETWEEN '"+filters.hourFrom+"' AND '"+filters.hourTo+"' GROUP BY \"HOUR\" ORDER BY \"HOUR\"",
             "offset":0,
             "limit":9,
             "acceptPartial":false,
@@ -42,7 +55,8 @@ class BusyHours extends Component {
         if(!responseJson.exception) {
             this.setState({
                 isLoading: false,
-                data: responseJson
+                data: responseJson,
+                filters: filters
             }, function () {
 
             });
@@ -70,12 +84,28 @@ class BusyHours extends Component {
     };
 
     return (
-        <View>
-            <TouchableOpacity onPress= {() => this.props.navigation.navigate("SalesTrendFilters",{
+        <View style={{backgroundColor: '#ffffff', height: window.height}}>
+            <TouchableOpacity onPress= {() => this.props.navigation.navigate("BusyHoursFilters",{
                 onNavigateBack: this.handleOnNavigateBack.bind(this)
             })}>
                 <IOSIcon name="ios-menu" size={30} />
             </TouchableOpacity>
+            <View style={{flexDirection:"row",marginTop:20 }}>
+                <View style={{flex:1}}>
+                    <Text style={styles.Text}>  Date:  </Text>
+                </View>
+                <View style={{flex:2}}>
+                    <Text style={styles.Text}>{this.state.filters.businessDate}</Text>
+                </View>
+            </View>
+            <View style={{flexDirection:"row",marginTop:10,marginBottom: 30 }}>
+                <View style={{flex:1}}>
+                    <Text style={styles.Text}>  Store:  </Text>
+                </View>
+                <View style={{flex:2}}>
+                    <Text style={styles.Text}>Brooklyn</Text>
+                </View>
+            </View>
         {this.state.isLoading ? <View style={{marginTop: 100}}><ActivityIndicator size="large" color="#0000ff" /></View> : (data.datasets[0].data.length > 0 ? 
             <View style={{flexDirection: 'row'}}>
                 <BarChart
@@ -100,5 +130,13 @@ class BusyHours extends Component {
         </View>);
   }
 }
+
+const styles = StyleSheet.create({
+    Text: {
+        marginTop:10,
+        marginLeft:10,
+        fontSize: 20
+    }
+})
 
 export default BusyHours;

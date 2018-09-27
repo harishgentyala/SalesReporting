@@ -14,6 +14,7 @@ import BusyHours from "./BusyHours";
 import SalesTrend from "./SalesTrend";
 import TopCustomers from "./TopCustomers";
 import TopProducts from "./TopProducts";
+import BusyHoursFilters from "./BusyHoursFilters";
 import SalesTrendFilters from "./SalesTrendFilters";
 import Login from "./Login";
 
@@ -46,7 +47,12 @@ const LeftNav = createStackNavigator({
       title: "Top Customers",
     })
   },
-
+  BusyHoursFilters: {
+    screen: BusyHoursFilters,
+    navigationOptions: ({navigation}) => ({
+      title: "Busy Hours Filters ",
+    })
+  },
   SalesTrendFilters: {
     screen: SalesTrendFilters,
     navigationOptions: ({navigation}) => ({

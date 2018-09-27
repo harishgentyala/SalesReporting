@@ -33,8 +33,7 @@ export default class Login extends Component {
                     <Text style={styles.TextLoginCenter} > Login  </Text>
                 </View>
 
-                <View style={{flexDirection:"row",marginTop:50,  justifyContent:'center', alignContent: 'center',alignItems:'center' }}>
-
+                <View style={{flexDirection:"row",marginTop:100,  justifyContent:'center', alignContent: 'center',alignItems:'center' }}>
                     <View >
                         <TextInput style={styles.inputBox}  placeholder="Username" onChangeText={(text) => this.setUsername(text)}/>
                     </View>
@@ -44,10 +43,10 @@ export default class Login extends Component {
                         <TextInput style={styles.inputBox}  placeholder="Password" onChangeText={(text) => this.setState({text})}/>
                     </View>
                 </View>
-                <View style={{ justifyContent:'center',alignContent: 'center',alignItems:'center',marginTop:50  }}>
+                <View style={{ justifyContent:'center',alignContent: 'center',alignItems:'center',marginTop:60  }}>
                     <View >
-                        <View style={{width:80}}>
-                            <Button  style={{width:50}} title="Login" color="#841584" onPress={this.navigateToHomeScreen}/>
+                        <View style={{width:100}}>
+                            <Button  style={{width:200}} title="Login" color="#841584" onPress={this.navigateToHomeScreen}/>
                         </View>
                     </View>
                 </View>
@@ -85,7 +84,7 @@ const styles = StyleSheet.create({
         marginTop:20
     },
     TextLoginCenter: {
-        fontSize: 15,
+        fontSize: 20,
         fontWeight: 'bold',
     },
     TextCenter: {
