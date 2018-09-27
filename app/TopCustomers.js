@@ -8,45 +8,77 @@ import {
   View,
   Container,
   Label,
-  Button
+  Button,
+  TouchableOpacity,
+  Dimensions
 } from 'react-native'
+import IOSIcon from "react-native-vector-icons/Ionicons";
+import Feather from "react-native-vector-icons/Feather";
+const screenWidth = Dimensions.get('window').width;
 
 class TopCustomers extends Component {
     constructor(props){
         super(props);
-        this.state = {isLoading: true, data: {results: []}}
-    }
-
-    componentDidMount(){
-        options = {
-        headers:{
-            "Authorization":"Basic YWRtaW46S1lMSU4=",
-            "Content-Type":"application/json"
-        },
-        method: "POST",
-        body: JSON.stringify({
-            "sql":'SELECT customername,sum(sales) as sales from SALESREPORT_INFO group by customername order by sales desc',
-            "offset":0,
-            "limit":50000,
-            "acceptPartial":false,
-            "project":"SALESREPORTINGAPP"
-        })
-    }
-
-    return fetch('http://153.71.16.34:7070/kylin/api/query',options)
-    .then((response) => response.json())
-    .then((responseJson) => {
-        this.setState({
-            isLoading: false,
-            data: responseJson
-        }, function(){
-
+        this.state = {isLoading: true, data: {results: []},month: 'JAN', year: 2018, order: 'desc'}
+        this.props.navigation.setParams({
+            handleOnNavigateBack: this.handleOnNavigateBack
         });
-    })
-    .catch((error) =>{
-        console.error(error);
-    });
-}
+    }
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: "Top Customers",
+            headerRight: (<TouchableOpacity onPress= {() => navigation.navigate("TopCustomerFilters",{
+            onNavigateBack: navigation.getParam("handleOnNavigateBack")
+})}>
+                <Feather name="filter" size={25} style={{marginRight: 10}} />
+            </TouchableOpacity>),
+            headerLeft: (<TouchableOpacity onPress= {() => navigation.openDrawer()}>
+                <IOSIcon name="ios-menu" size={30} style={{marginLeft: 10}} />
+            </TouchableOpacity>)
+
+        };
+    };
+
+    handleOnNavigateBack = (monthly, yearly, order) => {
+        this.setState({month: monthly, year: yearly, order: order});
+        this.getData(monthly,yearly,order);
+    };
+    componentDidMount(){
+        this.getData(this.state.month, this.state.year, this.state.order);
+    }
+
+    getData = (month, year, order) => {
+        let finalQuery;
+        finalQuery = 'select customername,sum(sales) as sales from SALESREPORT_INFO where transactionmonth = \''+month+'\' and transactionyear = '+year+' group by customername order by sales '+order+' limit 5';
+        options = {
+            headers:{
+                "Authorization":"Basic YWRtaW46S1lMSU4=",
+                "Content-Type":"application/json"
+            },
+            method: "POST",
+            body: JSON.stringify({
+                "sql":finalQuery,
+                "offset":0,
+                "limit":50000,
+                "acceptPartial":false,
+                "project":"SALESREPORTINGAPP"
+            })
+        }
+
+        return fetch('http://153.71.16.34:7070/kylin/api/query',options)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({
+                    isLoading: false,
+                    data: responseJson
+                }, function(){
+
+                });
+            })
+            .catch((error) =>{
+                console.error(error);
+            });
+    }
 
 
     renderRow(data,i) {
