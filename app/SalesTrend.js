@@ -8,7 +8,7 @@ import {
 } from 'react-native-chart-kit';
 import { Dimensions, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import IOSIcon from "react-native-vector-icons/Ionicons";
-
+import Feather from "react-native-vector-icons/Feather";
 const screenWidth = Dimensions.get('window').width;
 
 class SalesTrend extends React.PureComponent {
@@ -19,10 +19,16 @@ class SalesTrend extends React.PureComponent {
             headerRight: (<TouchableOpacity onPress= {() => navigation.navigate("SalesTrendFilters",{
             onNavigateBack: navigation.getParam("handleOnNavigateBack")
 })}>
+                <Feather name="filter" size={25} style={{marginRight: 10}} />
+            </TouchableOpacity>),
+            headerLeft: (<TouchableOpacity onPress= {() => navigation.openDrawer()}>
                 <IOSIcon name="ios-menu" size={30} style={{marginRight: 10}} />
             </TouchableOpacity>)
+
         };
     };
+
+//        this.props.navigation.openDrawer();
 
     constructor(props){
         super(props);
