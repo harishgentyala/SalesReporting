@@ -14,33 +14,64 @@ class SalesTrendFilters extends Component {
     constructor(props){
         super(props);
         this.sendFilters = this.sendFilters.bind(this);
-        this.setFilters = this.setFilters.bind(this);
-        this.state = {businessdate: 'dsdasd'}
+        this.setBusinessDateFrom = this.setBusinessDateFrom.bind(this);
+        this.setBusinessDateTo = this.setBusinessDateTo.bind(this);
+        this.state = {businessdateFrom: '2018-09-26', businessdateTo:'2018-09-26', minSales: 1, maxSales: 100};
+
     }
     sendFilters(){
-        this.props.navigation.state.params.onNavigateBack(this.state.businessdate);
-        this.props.navigation.navigate("SalesTrend", {
-            businessdate: this.state.businessdate
-        })
+        this.props.navigation.state.params.onNavigateBack(
+            this.state.businessdateFrom,
+            this.state.businessdateTo,
+            this.state.minSales,
+            this.state.maxSales);
+        this.props.navigation.navigate("SalesTrend");
     }
 
-    setFilters(itemValue, itemIndex){
-        this.setState({businessdate: itemValue});
+    setBusinessDateFrom(itemValue){
+        this.setState({businessdateFrom: itemValue});
+    }
+
+    setBusinessDateTo(itemValue, itemIndex){
+        this.setState({businessdateTo: itemValue});
+    }
+
+    setMinSales(itemValue){
+        console.log('min sakles',itemValue.text);
+        this.setState({minSales: parseInt(itemValue.text)});
+    }
+
+    setMaxSales(itemValue){
+        this.setState({maxSales: parseInt(itemValue.text)});
     }
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.TextViewCenter}>
-                    <Text style={styles.TextCenter} >  Filters  </Text>
-                </View>
-                <View style={{flexDirection:"row",marginTop:40 }}>
+                <View style={{flexDirection:"row",marginTop:15 }}>
                     <View style={{flex:1}}>
-                        <Text style={styles.Text}>  Show by  </Text>
+                        <Text style={styles.Text}> Business Date  </Text>
                     </View>
-                    <View style={{flex:1.5}}>
-                        <Picker style={{ height: 30, width: 100 }} onValueChange={this.setFilters}>
+                    <View style={{flex:1}}>
+                        <Picker selectedValue={this.state.businessdateFrom} style={{ height: 30, width: 150 }} onValueChange={this.setBusinessDateFrom}>
                             <Picker.Item label="Select" value="Select" />
-                            <Picker.Item label="2018-09-21" value="2018-09-21" />
+                            <Picker.Item label="2018-09-27" value="2018-09-27" />
+                            <Picker.Item label="2018-01-11" value="2018-01-11" />
+                            <Picker.Item label="2018-09-26" value="2018-09-26" />
+                            <Picker.Item label="2018-07-26" value="2018-07-26" />
+                        </Picker>
+                    </View>
+                </View>
+                <View style={styles.TextViewCenter}>
+                    <Text style={styles.TextCenter}> Compared With </Text>
+                </View>
+                <View style={{flexDirection:"row",marginTop:15 }}>
+                    <View style={{flex:1}}>
+                        <Text style={styles.Text}> Business Date </Text>
+                    </View>
+                    <View style={{flex:1}}>
+                        <Picker selectedValue={this.state.businessdateTo} style={{ height: 30, width: 150 }} onValueChange={this.setBusinessDateTo}>
+                            <Picker.Item label="Select" value="Select" />
+                            <Picker.Item label="2018-09-27" value="2018-09-27" />
                             <Picker.Item label="2018-01-11" value="2018-01-11" />
                             <Picker.Item label="2018-09-26" value="2018-09-26" />
                             <Picker.Item label="2018-07-26" value="2018-07-26" />
@@ -48,52 +79,30 @@ class SalesTrendFilters extends Component {
                     </View>
                 </View>
 
-                <View style={{flexDirection:"row",marginTop:10 }}>
-                    <View style={{flex:1}}>
-                        <Text style={styles.Text}>  Year by  </Text>
-                    </View>
-                    <View style={{flex:1.5}}>
-                        <Picker style={{ height: 30, width: 100 }} onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
-                            <Picker.Item label="2018" value="2018" />
-                            <Picker.Item label="2017" value="2017" />
-                        </Picker>
-                    </View>
-                </View>
-
-
-                <View style={{flexDirection:"row",marginTop:10 }}>
+                <View style={{flexDirection:"row",marginTop:15 }}>
                     <View style={{flex:1}}>
                         <Text style={styles.Text}>  Min Sale </Text>
                     </View>
-                    <View style={{flex:1.5}}>
-                        <TextInput style={styles.inputBox}  placeholder="Type here!" onChangeText={(text) => this.setState({text})}/>
+                    <View style={{flex:1}}>
+                        <TextInput style={styles.inputBox}  placeholder="ex:1" onChangeText={(text) => this.setMinSales({text})}/>
                     </View>
                 </View>
-                <View style={{flexDirection:"row",marginTop:10 }}>
+                <View style={{flexDirection:"row",marginTop:15 }}>
                     <View style={{flex:1}}>
                         <Text style={styles.Text}>  Max Sale </Text>
                     </View>
-                    <View style={{flex:1.5}}>
-                        <TextInput style={styles.inputBox}  placeholder="Type here!" onChangeText={(text) => this.setState({text})}/>
+                    <View style={{flex:1}}>
+                        <TextInput style={styles.inputBox}  placeholder="ex:100" onChangeText={(text) => this.setMaxSales({text})}/>
                     </View>
                 </View>
-                <View style={{position: "absolute", bottom: 0,left: 0 , right:0  }}>
-                    <View style={{flexDirection:"row",marginTop:10,marginBottom:10 }}>
-                        <View style={{width:80,marginLeft:5}}>
-                            <Button  style={{width:50}} title="Cancel" color="#841584" />
-                        </View>
-                        <View style={{width:80,marginRight:5,right:0,position: "absolute"}} >
-                            <Button   title="Apply" color="#841584"
-                            onPress={this.sendFilters}/>
+                <View style={{ justifyContent:'center',alignContent: 'center',alignItems:'center',marginTop:60  }}>
+                    <View >
+                        <View style={{width:200}}>
+                            <Button  style={{width:200}} title="Apply" color="#841584" onPress={this.sendFilters}/>
                         </View>
                     </View>
                 </View>
-                <Button
-                    onPress={this.sendFilters}
-                    title="Learn More"
-                    color="#841584"
-                    accessibilityLabel="click"
-                />
+
             </View>
 
         )
@@ -102,7 +111,8 @@ class SalesTrendFilters extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#fff',
+
     },
     welcome: {
         fontSize: 20,
@@ -110,28 +120,25 @@ const styles = StyleSheet.create({
         margin: 10,
     },
     inputBox: {
-        borderRadius: 4,
-        borderWidth: 0.5,
-        borderColor: '#000',
         height: 30,
         justifyContent: 'flex-end',
         marginRight:20,
         marginLeft:2,
-        width:100,
         paddingLeft:5
     },
     Text: {
-        marginTop:10
+
+        fontSize: 15,
+        marginLeft: 10
     },
     TextViewCenter: {
-        justifyContent:'center',
-        alignContent: 'center',
-        alignItems:'center',
-        marginTop:20
+
+        marginLeft: 10,
+        marginTop: 15
     },
     TextCenter: {
-        fontSize: 20,
-        fontWeight: 'bold',
+        fontSize: 15,
+        fontWeight: 'bold'
     }
 })
 
