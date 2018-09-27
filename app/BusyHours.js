@@ -34,13 +34,11 @@ class BusyHours extends Component {
                     <Feather name="filter" size={25} style={{marginRight: 10}} />
                 </TouchableOpacity>),
             headerLeft: (<TouchableOpacity onPress= {() => navigation.openDrawer()}>
-                <IOSIcon name="ios-menu" size={30} style={{marginRight: 10}} />
+                <IOSIcon name="ios-menu" size={30} style={{marginLeft: 10}} />
             </TouchableOpacity>)
         };
     };
     handleOnNavigateBack = (filters) => {
-        console.log('handleOnNavigateBack', filters)
-        
         this.getData(filters);
     };
  
@@ -108,7 +106,7 @@ class BusyHours extends Component {
                     <Text style={styles.Text}>{this.state.filters.businessDate}</Text>
                 </View>
             </View>
-            <View style={{flexDirection:"row",marginTop:10,marginBottom: 30 }}>
+            <View style={{flexDirection:"row",marginTop:10,marginBottom: 40 }}>
                 <View style={{flex:1}}>
                     <Text style={styles.Text}>  Store:  </Text>
                 </View>
@@ -136,7 +134,7 @@ class BusyHours extends Component {
                         }
                     }}/>
             </View> :
-            <Text>No data to display</Text>)}
+            <View style={{ justifyContent:'center',alignContent: 'center',alignItems:'center',marginTop:60  }}><Text style={styles.Text}>No data to display</Text></View>)}
         </View>);
   }
 }
