@@ -14,16 +14,24 @@ import BusyHours from "./BusyHours";
 import SalesTrend from "./SalesTrend";
 import TopCustomers from "./TopCustomers";
 import TopProducts from "./TopProducts";
+import SalesTrendFilters from "./SalesTrendFilters";
+import Login from "./Login";
 
 const LeftNav = createStackNavigator({
   Main : {
-    screen: HomeScreen,
+    screen: Login,
     navigationOptions: ({navigation}) => ({
-      title: "Home",
+      title: "Login",
       headerLeft:(<TouchableOpacity onPress={() => navigation.navigate("DrawerOpen")}>
                     <IOSIcon name="ios-menu" size={30} />
                   </TouchableOpacity>
       ),
+      headerStyle: {}
+    })
+  },
+  HomeScreen : {
+    screen: HomeScreen,
+    navigationOptions: ({navigation}) => ({
       headerStyle: {}
     })
   },
@@ -35,14 +43,20 @@ const LeftNav = createStackNavigator({
   },
   SalesTrend: {
     screen: SalesTrend,
-    navigationOptions: ({navigation}) => ({
-      title: "Sales Trend",
-    })
+
   },
   TopCustomers: {
     screen: TopCustomers,
     navigationOptions: ({navigation}) => ({
       title: "Top Customers",
+    })
+  },
+
+  SalesTrendFilters: {
+    screen: SalesTrendFilters,
+    navigationOptions: ({navigation}) => ({
+      title: "Sales Trend Filters",
+
     })
   },
   TopProducts: {

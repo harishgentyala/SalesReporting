@@ -6,49 +6,60 @@ import {
     ProgressChart,
     ContributionGraph
 } from 'react-native-chart-kit';
-import { Dimensions, Text, View } from 'react-native';
-const screenWidth = Dimensions.get('window').width
+import { Dimensions, Text, View, TouchableOpacity } from 'react-native';
+import IOSIcon from "react-native-vector-icons/Ionicons";
+
+const screenWidth = Dimensions.get('window').width;
 
 class SalesTrend extends React.PureComponent {
 
     constructor(props){
         super(props);
-        this.state = {data: {results: []}}
+        this.state = {data: {results: []}, businessdate:'2018-09-26'}
     }
-
-    componentDidMount(){
-        options = {
-    headers:{
-        "Authorization":"Basic YWRtaW46S1lMSU4=",
-        "Content-Type":"application/json"
-    },
-    method: "POST",
-    body: JSON.stringify({
-        "sql":'SELECT transactionmonth,transactionyear,"HOUR",sum(sales) as sales from SALESREPORT_INFO where businessdate in (\'2018-09-26\') group by transactionmonth,transactionyear,"HOUR" order by "HOUR" asc',
-        "offset":0,
-        "limit":50000,
-        "acceptPartial":false,
-        "project":"SALESREPORTINGAPP"
-    })
-};
-
-    return fetch('http://153.71.16.34:7070/kylin/api/query',options)
-.then((response) => response.json())
-.then((responseJson) => {
-
-    if(!responseJson.exception) {
+    handleOnNavigateBack = (bd) => {
         this.setState({
-            data: responseJson
-        }, function () {
-
+            businessdate: bd
         });
-    }
-
-})
-.catch((error) =>{
-    console.error(error);
-});
+        this.getData(bd);
+    };
+    componentDidMount(){
+        this.getData(this.state.businessdate);
 }
+    getData = (bd) => {
+        options = {
+            headers:{
+                "Authorization":"Basic YWRtaW46S1lMSU4=",
+                "Content-Type":"application/json"
+            },
+            method: "POST",
+            body: JSON.stringify({
+                "sql":'SELECT transactionmonth,transactionyear,"HOUR",sum(sales) as sales from SALESREPORT_INFO where businessdate in (\''+bd+'\') group by transactionmonth,transactionyear,"HOUR" order by "HOUR" asc',
+                "offset":0,
+                "limit":50000,
+                "acceptPartial":false,
+                "project":"SALESREPORTINGAPP"
+            })
+        };
+        console.log('SELECT transactionmonth,transactionyear,"HOUR",sum(sales) as sales from SALESREPORT_INFO where businessdate in (\''+bd+'\') group by transactionmonth,transactionyear,"HOUR" order by "HOUR" asc');
+
+        return fetch('http://153.71.16.34:7070/kylin/api/query',options)
+            .then((response) => response.json())
+            .then((responseJson) => {
+
+                if(!responseJson.exception) {
+                    this.setState({
+                        data: responseJson
+                    }, function () {
+
+                    });
+                }
+
+            })
+            .catch((error) =>{
+                console.error(error);
+            });
+    }
 
     render() {
         const resultantSales = this.state.data.results.map((element,index) => parseInt(element[3]));
@@ -62,6 +73,11 @@ class SalesTrend extends React.PureComponent {
 
         return (
             <View>
+                <TouchableOpacity onPress= {() => this.props.navigation.navigate("SalesTrendFilters",{
+  onNavigateBack: this.handleOnNavigateBack.bind(this)
+})}>
+                    <IOSIcon name="ios-menu" size={30} />
+                </TouchableOpacity>
         {data.datasets[0].data.length > 0 ? (
             <LineChart
                 data={data}
@@ -81,6 +97,7 @@ class SalesTrend extends React.PureComponent {
         ) : (
             <Text>No data to display</Text>
         )}
+                <Text>{this.props.navigation.getParam('businessdate', 'NO-ID')}</Text>
                 </View>
         );
     }
