@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
-import {ActivityIndicator, View, Dimensions} from 'react-native';
+import {ActivityIndicator, View, Dimensions, Text, TouchableOpacity} from 'react-native';
+import IOSIcon from "react-native-vector-icons/Ionicons";
 import {BarChart} from 'react-native-chart-kit'
 
 const window = Dimensions.get('window');
 const screenWidth = window.width
-const data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-  datasets: [{
-    data: [ 20, 45, 28, 80, 99, 43 ]
-  }]
-}
 
 class BusyHours extends Component {
   constructor(props) {
@@ -17,16 +12,12 @@ class BusyHours extends Component {
 
     this.state = {
       isLoading: true,
-      data: [],
+      data: {results:[]},
     };
   }
-
+ 
   componentDidMount() {
     this.getData();
-  }
-
-  componentWillUnmount() {
-
   }
 
   getData = () => {
@@ -37,9 +28,9 @@ class BusyHours extends Component {
         },
         method: "POST",
         body: JSON.stringify({
-            "sql":"SELECT \"HOUR\", COUNT(DISTINCT(SALESREPORT_INFO.CUSTOMERID)) FROM  SALESREPORT_INFO WHERE SALESREPORT_INFO.BUSINESSDATE IN('2018-09-26') GROUP BY \"HOUR\" ORDER BY \"HOUR\"",
+            "sql":"SELECT \"HOUR\", COUNT(SALESREPORT_INFO.CUSTOMERID) FROM  SALESREPORT_INFO WHERE SALESREPORT_INFO.BUSINESSDATE IN('2018-09-26') GROUP BY \"HOUR\" ORDER BY \"HOUR\"",
             "offset":0,
-            "limit":50000,
+            "limit":9,
             "acceptPartial":false,
             "project":"SALESREPORTINGAPP"
         })
@@ -50,6 +41,7 @@ class BusyHours extends Component {
     .then((responseJson) => {
         if(!responseJson.exception) {
             this.setState({
+                isLoading: false,
                 data: responseJson
             }, function () {
 
@@ -68,38 +60,43 @@ class BusyHours extends Component {
       borderBottomRightRadius: 5
     };
 
-    //const resultCustomers = this.state.data.results.map((element,index) => parseInt(element[1]));
-     //   const resultantHours = this.state.data.results.map((element,index) => element[0]);
+    const resultCustomers = this.state.data.results.map((element,index) => parseInt(element[1]));
+    const resultantHours = this.state.data.results.map((element,index) => element[0]);
     const data = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+        labels: resultantHours,
         datasets: [{
-            data: [ 20, 45, 28, 80, 99, 43 ]
+            data: resultCustomers
         }]
-    }
+    };
 
     return (
         <View>
-        {data.datasets[0].data.length > 0 ? 
-            <View style={{flexDirection: 'row', backgroundColor: '#F5FCFF'}}>
+            <TouchableOpacity onPress= {() => this.props.navigation.navigate("SalesTrendFilters",{
+                onNavigateBack: this.handleOnNavigateBack.bind(this)
+            })}>
+                <IOSIcon name="ios-menu" size={30} />
+            </TouchableOpacity>
+        {this.state.isLoading ? <View style={{marginTop: 100}}><ActivityIndicator size="large" color="#0000ff" /></View> : (data.datasets[0].data.length > 0 ? 
+            <View style={{flexDirection: 'row'}}>
                 <BarChart
                     style={{
-                        marginVertical: 8,
-                        borderRadius: 16
+                        marginVertical: 1,
+                        borderRadius: 2
                     }}
                     data={data}
                     width={screenWidth}
-                    height={220}
+                    height={300}
                     chartConfig={{
-                        backgroundColor: '#fdfdfd',
-                        backgroundGradientFrom: '#adadad',
-                        backgroundGradientTo: '#efefef',
-                        color: (opacity = 1) => `rgba(0, 0, 0, 1)`,
+                        backgroundColor: '#ffffff',
+                        backgroundGradientFrom: '#ffffff',
+                        backgroundGradientTo: '#ffff',
+                        color: (opacity = 1) => `rgba(20, 99, 9, 1)`,
                         style: {
-                            borderRadius: 5
+                            borderRadius: 1
                         }
                     }}/>
             </View> :
-            <Text>No data to display</Text>}
+            <Text>No data to display</Text>)}
         </View>);
   }
 }
