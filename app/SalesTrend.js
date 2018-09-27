@@ -89,6 +89,14 @@ console.log(finalQuery);
 
                     });
                 }
+                else{
+                    this.setState({
+                        data: {results: []},
+                        isLoading: false
+                    }, function () {
+
+                    });
+                }
 
             })
             .catch((error) =>{
@@ -99,7 +107,6 @@ console.log(finalQuery);
     render() {
         const resultantSales = this.state.data.results.map((element,index) => parseInt(element[1]));
         const resultantHours = this.state.data.results.map((element,index) => element[0]);
-        console.log("business date",this.state.businessdateFrom);
         const data = {
             labels: resultantHours,
             datasets: [{
