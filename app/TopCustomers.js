@@ -10,7 +10,8 @@ import {
   Label,
   Button,
   TouchableOpacity,
-  Dimensions
+  Dimensions,
+    ScrollView
 } from 'react-native'
 import IOSIcon from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
@@ -19,7 +20,7 @@ const screenWidth = Dimensions.get('window').width;
 class TopCustomers extends Component {
     constructor(props){
         super(props);
-        this.state = {isLoading: true, data: {results: []},month: 'JAN', year: 2018, order: 'desc'}
+        this.state = {isLoading: true, data: {results: []},month: 'JAN', year: 2018, order: 'desc', size: 5}
         this.props.navigation.setParams({
             handleOnNavigateBack: this.handleOnNavigateBack
         });
@@ -39,17 +40,17 @@ class TopCustomers extends Component {
         };
     };
 
-    handleOnNavigateBack = (monthly, yearly, order) => {
-        this.setState({month: monthly, year: yearly, order: order});
-        this.getData(monthly,yearly,order);
+    handleOnNavigateBack = (monthly, yearly, order,size) => {
+        this.setState({month: monthly, year: yearly, order: order, size: size});
+        this.getData(monthly,yearly,order,size);
     };
     componentDidMount(){
-        this.getData(this.state.month, this.state.year, this.state.order);
+        this.getData(this.state.month, this.state.year, this.state.order, this.state.size);
     }
 
-    getData = (month, year, order) => {
+    getData = (month, year, order, size) => {
         let finalQuery;
-        finalQuery = 'select customername,sum(sales) as sales from SALESREPORT_INFO where transactionmonth = \''+month+'\' and transactionyear = '+year+' group by customername order by sales '+order+' limit 5';
+        finalQuery = 'select customername,sum(sales) as sales from SALESREPORT_INFO where transactionmonth = \''+month+'\' and transactionyear = '+year+' group by customername order by sales '+order+' limit '+size;
         options = {
             headers:{
                 "Authorization":"Basic YWRtaW46S1lMSU4=",
@@ -103,7 +104,7 @@ class TopCustomers extends Component {
     return (
         <View>
             <View style={{marginTop:15,marginBottom:10, alignItems: "center" }}>
-                <Text>{this.state.order == "asc" ? "Least" : "Top"} 5 in {this.state.month},{this.state.year}</Text>
+                <Text>{this.state.order == "asc" ? "Least" : "Top"} {this.state.size} in {this.state.month},{this.state.year}</Text>
             </View>
             <View>
                 <View  style={styles.HeaderParent}>
@@ -124,6 +125,7 @@ class TopCustomers extends Component {
                 <View style={{marginTop: 100}}>
                     <ActivityIndicator size="large" color="#0000ff" />
                 </View> :
+                    <ScrollView>
                 <View>
                     {
                         this.state.data.results.length > 0 ? (
@@ -135,6 +137,7 @@ class TopCustomers extends Component {
                             </View>)
                 }
                 </View>
+                   </ScrollView>
             }
         </View>   
     );

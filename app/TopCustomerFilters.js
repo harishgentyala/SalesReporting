@@ -17,7 +17,8 @@ export default class TopCustomerFilters extends Component {
         this.setMonth = this.setMonth.bind(this);
         this.setYear = this.setYear.bind(this);
         this.setOrder = this.setOrder.bind(this);
-        this.state = {month: 'JAN', year:'2018', order:'desc'};
+        this.setSize = this.setSize.bind(this);
+        this.state = {month: 'JAN', year:'2018', order:'desc', size: 5};
 
     }
 
@@ -25,7 +26,8 @@ export default class TopCustomerFilters extends Component {
         this.props.navigation.state.params.onNavigateBack(
             this.state.month,
             this.state.year,
-            this.state.order);
+            this.state.order,
+            this.state.size);
         this.props.navigation.navigate("TopCustomers");
     }
 
@@ -39,6 +41,10 @@ export default class TopCustomerFilters extends Component {
 
     setOrder(itemValue){
         this.setState({order: itemValue});
+    }
+
+    setSize(itemValue){
+        this.setState({size: itemValue});
     }
 
     render() {
@@ -88,6 +94,20 @@ export default class TopCustomerFilters extends Component {
                         <Picker selectedValue={this.state.order} style={{ height: 30, width: 150 }} onValueChange={this.setOrder}>
                             <Picker.Item label="Top" value="desc" />
                             <Picker.Item label="Least" value="asc" />
+                        </Picker>
+                    </View>
+                </View>
+                <View style={{flexDirection:"row",marginTop:10 }}>
+                    <View style={{flex:1}}>
+                        <Text style={styles.Text}>  Size </Text>
+                    </View>
+                    <View style={{flex:1}}>
+                        <Picker selectedValue={this.state.size} style={{ height: 30, width: 150 }} onValueChange={this.setSize}>
+                            <Picker.Item label="5" value="5" />
+                            <Picker.Item label="10" value="10" />
+                            <Picker.Item label="15" value="15" />
+                            <Picker.Item label="20" value="20" />
+
                         </Picker>
                     </View>
                 </View>
